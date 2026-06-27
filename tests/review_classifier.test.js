@@ -13,6 +13,7 @@ test("classifies ads complaints", () => {
   assert.equal(result.status, "selected");
   assert.equal(result.intent, "remove_ads");
   assert.equal(result.template, "Remove Ads 3");
+  assert.equal(result.folder, "Remove Ads");
 });
 
 test("classifies technical issues", () => {
@@ -25,6 +26,7 @@ test("classifies permission and privacy concerns", () => {
   const result = classify("Why does it need camera permission and collect my data?", 2);
   assert.equal(result.intent, "permission_concern");
   assert.equal(result.template, "Permission Concern");
+  assert.equal(result.folder, "Technical Issue Response");
 });
 
 test("classifies virus concerns ahead of generic negative fallback", () => {
@@ -37,12 +39,14 @@ test("uses rating mismatch for positive text with low rating", () => {
   const result = classify("It's a nice app, very good and useful", 3);
   assert.equal(result.intent, "rating_mismatch");
   assert.equal(result.template, "Rating Mismatch");
+  assert.equal(result.folder, "Review không liên quan");
 });
 
 test("uses general one-star fallback for low-rating generic complaint", () => {
   const result = classify("Very bad experience", 1);
   assert.equal(result.intent, "general_1_star");
   assert.equal(result.template, "General 1 star");
+  assert.equal(result.folder, "User chê app");
 });
 
 test("skips empty and very uncertain reviews", () => {
@@ -59,4 +63,27 @@ test("rule file has the same template keys as the embedded browser rules", () =>
     Object.keys(fileRules.templates).sort(),
     Object.keys(agent.DEFAULT_RULES.templates).sort()
   );
+});
+
+test("rule file has verified folder mappings from the Review screenshots", () => {
+  const rulePath = path.join(__dirname, "..", "review_rules.json");
+  const fileRules = JSON.parse(fs.readFileSync(rulePath, "utf8"));
+  const expectedFolders = {
+    rating_mismatch: "Review không liên quan",
+    need_details: "Review không liên quan",
+    usage_help: "Review không liên quan",
+    general_1_star: "User chê app",
+    missing_content: "User góp ý",
+    remove_ads: "Remove Ads",
+    permission_concern: "Technical Issue Response",
+    virus_problem: "Technical Issue Response",
+    technical_issue: "Technical Issue Response",
+    performance_issue: "Technical Issue Response"
+  };
+
+  for (const [key, folder] of Object.entries(expectedFolders)) {
+    assert.equal(fileRules.templates[key].folder, folder, key);
+    assert.equal(agent.DEFAULT_RULES.templates[key].folder, folder, key);
+    assert.ok(fileRules.templateFolders[folder].includes(fileRules.templates[key].template), key);
+  }
 });

@@ -4,7 +4,7 @@ Browser-side helper for selecting and sending Volio App Publisher review reply t
 
 ## Files
 
-- `review_rules.json`: editable intent-to-template rules.
+- `review_rules.json`: editable intent-to-template rules, including verified template folder mappings from `D:\Kimi\Review`.
 - `tools/volio_review_agent.js`: self-contained script to run inside the Volio browser page.
 - `tests/review_classifier.test.js`: classifier coverage for the risky template choices.
 - `docs/volio_review_agent_sop.md`: operational SOP for AI agents running the recurring task.
@@ -76,6 +76,7 @@ To save a copied log under `D:\Kimi\logs`:
 - The script does not click `Rewrite with AI`.
 - The script does not type custom reply text.
 - Reviews with low confidence are skipped.
+- The selected decision includes a `folder` field so hidden templates can be picked from the correct `Saved Replies` folder.
 - Sending stops if a send action does not appear to complete after the delay.
 - When controlling Chrome directly, cancel any open reply box before switching to another review.
 

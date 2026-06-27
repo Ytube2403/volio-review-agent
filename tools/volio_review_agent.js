@@ -9,7 +9,7 @@
   "use strict";
 
   const DEFAULT_RULES = {
-    version: 1,
+    version: 2,
     defaults: {
       mode: "select_then_send",
       maxReviews: 50,
@@ -18,22 +18,33 @@
       skipUncertain: true
     },
     templates: {
-      general_1_star: { template: "General 1 star", aliases: ["General 1 star", "Not Good"] },
-      need_details: { template: "Need Details", aliases: ["Need Details"] },
+      general_1_star: { template: "General 1 star", folder: "User chê app", aliases: ["General 1 star"] },
+      need_details: { template: "Need Details", folder: "Review không liên quan", aliases: ["Need Details"] },
       technical_issue: {
         template: "Technical Issue",
-        aliases: ["Technical Issue", "Technical Issue Response", "Technical Issue Thanks"]
+        folder: "Technical Issue Response",
+        aliases: ["Technical Issue", "Technical Issue Response", "Technical Issue Thanks", "Technical Issue Fixed"]
       },
       remove_ads: {
         template: "Remove Ads 3",
-        aliases: ["Remove Ads 3", "Remove ads 2", "Quảng cáo - Remove ad", "Remove Ads"]
+        folder: "Remove Ads",
+        aliases: ["Remove Ads 3", "remove ads 2", "Quảng cáo - Remove ad", "Reply_4Star_Ads_Option3"]
       },
-      permission_concern: { template: "Permission Concern", aliases: ["Permission Concern"] },
-      virus_problem: { template: "Virus Problem", aliases: ["Virus Problem"] },
-      usage_help: { template: "Usage Help", aliases: ["Usage Help"] },
-      missing_content: { template: "Missing Content", aliases: ["Missing Content"] },
-      performance_issue: { template: "Performance Issue", aliases: ["Performance Issue"] },
-      rating_mismatch: { template: "Rating Mismatch", aliases: ["Rating Mismatch"] }
+      permission_concern: { template: "Permission Concern", folder: "Technical Issue Response", aliases: ["Permission Concern"] },
+      virus_problem: { template: "Virus Problem", folder: "Technical Issue Response", aliases: ["Virus Problem"] },
+      usage_help: { template: "Usage Help", folder: "Review không liên quan", aliases: ["Usage Help"] },
+      missing_content: { template: "Missing Content", folder: "User góp ý", aliases: ["Missing Content"] },
+      performance_issue: { template: "Performance Issue", folder: "Technical Issue Response", aliases: ["Performance Issue"] },
+      rating_mismatch: { template: "Rating Mismatch", folder: "Review không liên quan", aliases: ["Rating Mismatch"] }
+    },
+    templateFolders: {
+      "Review không liên quan": ["Usage Help", "Improve Note", "Need Details", "Rating Mismatch", "Not Good", "Không liên quan 1"],
+      "Technical Issue Response": ["Virus Problem", "Technical Issue", "Permission Concern", "Technical Issue Thanks", "Technical Issue Fixed", "Performance Issue"],
+      "User chê app": ["General 1 star", "Xin lỗi & Cam kết cải thiện", "Xin lỗi và Hỗ trợ kỹ thuật", "Xin lỗi và cam kết cập nhật"],
+      "User góp ý": ["Missing Content", "Setup Feedback", "Star Upgrade", "Positive but Ads Feedback"],
+      "User khen app": ["User Love", "Great App 2", "Great user taste", "Great App", "Khen ngợi - Phản hồi nhiệt tình", "Phản hồi thân thiện", "Phản hồi đáng yêu 1", "Phản hồi đáng yêu 2"],
+      "Remove Ads": ["Remove Ads 3", "remove ads 2", "Quảng cáo - Remove ad", "Reply_4Star_Ads_Option3"],
+      "5 sao": ["Phản hồi 5 sao - Nhiều Icon (2)", "cảm ơn sâu sắc", "mời quay lại dùng tiếp", "ghi nhận góp ý (nếu có)", "5 sao (2)", "Phản hồi 5 sao 1"]
     },
     intents: [
       {
@@ -207,6 +218,7 @@
         intent: intent.id,
         templateKey: intent.templateKey,
         template: template.template,
+        folder: template.folder || "",
         aliases: template.aliases,
         confidence: roundConfidence(confidence),
         reason: result.hits.join(", "),
@@ -234,6 +246,7 @@
         intent: "general_1_star",
         templateKey: "general_1_star",
         template: template.template,
+        folder: template.folder || "",
         aliases: template.aliases,
         confidence: 0.66,
         reason: "fallback: 1-star review without a stronger intent",
@@ -249,6 +262,7 @@
         intent: "need_details",
         templateKey: "need_details",
         template: template.template,
+        folder: template.folder || "",
         aliases: template.aliases,
         confidence: 0.63,
         reason: "fallback: low-rating review needs details",
@@ -266,6 +280,7 @@
       intent: "",
       templateKey: "",
       template: "",
+      folder: "",
       aliases: [],
       confidence: 0,
       reason,
@@ -461,6 +476,7 @@
       review_text: item.text || "",
       detected_intent: item.decision.intent || "",
       template: item.decision.template || "",
+      folder: item.decision.folder || "",
       confidence: item.decision.confidence,
       status,
       reason: item.decision.reason || "",
@@ -515,6 +531,17 @@
     return candidates[candidates.length - 1] || null;
   }
 
+  async function openTemplateFolder(decision, options) {
+    if (!decision.folder) return false;
+    const folderButton = await waitFor(() => findClickableByText(root.document, [decision.folder], { exact: true, enabledOnly: true }), options.templateTimeoutMs, 250);
+    if (!folderButton) return false;
+    folderButton.scrollIntoView({ block: "center", inline: "nearest" });
+    await delay(100);
+    folderButton.click();
+    await delay(150);
+    return true;
+  }
+
   async function selectTemplate(card, decision, options) {
     const labels = decision.aliases && decision.aliases.length ? decision.aliases : [decision.template];
     let templateButton = findTemplateButton(card, labels);
@@ -524,6 +551,7 @@
       moreButton.scrollIntoView({ block: "center", inline: "nearest" });
       await delay(100);
       moreButton.click();
+      await openTemplateFolder(decision, options);
       templateButton = await waitFor(() => findTemplateButton(root.document, labels), options.templateTimeoutMs, 250);
     }
     if (!templateButton) return { ok: false, error: `template_not_found: ${decision.template}` };
@@ -706,6 +734,7 @@
       "review_text",
       "detected_intent",
       "template",
+      "folder",
       "confidence",
       "status",
       "reason",
