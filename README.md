@@ -7,6 +7,7 @@ Browser-side helper for selecting and sending Volio App Publisher review reply t
 - `review_rules.json`: editable intent-to-template rules.
 - `tools/volio_review_agent.js`: self-contained script to run inside the Volio browser page.
 - `tests/review_classifier.test.js`: classifier coverage for the risky template choices.
+- `docs/volio_review_agent_sop.md`: operational SOP for AI agents running the recurring task.
 
 ## Browser Usage
 
@@ -31,7 +32,7 @@ Convenience helper on Windows:
 
 Then paste the clipboard content into the Volio page console or inject it through Kimi Bridge.
 
-Recommended staged run:
+Recommended staged run for script-only use:
 
 ```js
 // 1. Classify only. No clicks.
@@ -43,6 +44,8 @@ await VolioReviewAgent.selectOnly({ maxReviews: 50 });
 // 3. Send every selected reply with a 15 second gap.
 await VolioReviewAgent.sendSelected({ sendDelayMs: 15000 });
 ```
+
+For live Chrome/Codex operation, prefer the SOP in `docs/volio_review_agent_sop.md`: process one review at a time, send it, wait for the reply box to disappear, then continue. Do not keep multiple reply boxes open.
 
 One-shot mode:
 
@@ -74,6 +77,7 @@ To save a copied log under `D:\Kimi\logs`:
 - The script does not type custom reply text.
 - Reviews with low confidence are skipped.
 - Sending stops if a send action does not appear to complete after the delay.
+- When controlling Chrome directly, cancel any open reply box before switching to another review.
 
 ## Test
 
