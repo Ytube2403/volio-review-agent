@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "defaults": {
+    "mode": "select_then_send",
+    "maxReviews": 50,
+    "minConfidence": 0.62,
+    "sendDelayMs": 15000,
+    "skipUncertain": true
+  },
+  "templates": {
+    "general_1_star": {
+      "template": "General 1 star",
+      "aliases": ["General 1 star", "Not Good"]
+    },
+    "need_details": {
+      "template": "Need Details",
+      "aliases": ["Need Details"]
+    },
+    "technical_issue": {
+      "template": "Technical Issue",
+      "aliases": ["Technical Issue", "Technical Issue Response", "Technical Issue Thanks"]
+    },
+    "remove_ads": {
+      "template": "Remove Ads 3",
+      "aliases": ["Remove Ads 3", "Remove ads 2", "Quảng cáo - Remove ad", "Remove Ads"]
+    },
+    "permission_concern": {
+      "template": "Permission Concern",
+      "aliases": ["Permission Concern"]
+    },
+    "virus_problem": {
+      "template": "Virus Problem",
+      "aliases": ["Virus Problem"]
+    },
+    "usage_help": {
+      "template": "Usage Help",
+      "aliases": ["Usage Help"]
+    },
+    "missing_content": {
+      "template": "Missing Content",
+      "aliases": ["Missing Content"]
+    },
+    "performance_issue": {
+      "template": "Performance Issue",
+      "aliases": ["Performance Issue"]
+    },
+    "rating_mismatch": {
+      "template": "Rating Mismatch",
+      "aliases": ["Rating Mismatch"]
+    }
+  },
+  "intents": [
+    {
+      "id": "virus_problem",
+      "templateKey": "virus_problem",
+      "keywords": ["virus", "malware", "trojan", "unsafe", "security", "hack", "scam", "lừa đảo", "doc hai", "độc hại", "bao mat", "bảo mật"]
+    },
+    {
+      "id": "remove_ads",
+      "templateKey": "remove_ads",
+      "keywords": ["ad", "ads", "advert", "advertisement", "quang cao", "quảng cáo", "remove ads", "too many ads", "full screen ad", "popup ad"]
+    },
+    {
+      "id": "permission_concern",
+      "templateKey": "permission_concern",
+      "keywords": ["permission", "permissions", "privacy", "private", "data", "collect", "tracking", "camera", "microphone", "location", "quyen", "quyền", "du lieu", "dữ liệu", "rieng tu", "riêng tư"]
+    },
+    {
+      "id": "technical_issue",
+      "templateKey": "technical_issue",
+      "keywords": ["bug", "error", "crash", "crashed", "not working", "doesn't work", "dont work", "can't open", "cannot open", "freeze", "stuck", "lag", "black screen", "failed", "fix", "broken", "loi", "lỗi", "khong hoat dong", "không hoạt động", "bi treo", "bị treo", "văng", "sập"]
+    },
+    {
+      "id": "performance_issue",
+      "templateKey": "performance_issue",
+      "keywords": ["slow", "laggy", "lag", "battery", "heat", "hot", "ram", "storage", "performance", "data usage", "cham", "chậm", "nong may", "nóng máy", "hao pin", "tốn pin", "giật"]
+    },
+    {
+      "id": "missing_content",
+      "templateKey": "missing_content",
+      "keywords": ["missing", "no content", "not enough", "need more", "where is", "not available", "khong co", "không có", "thieu", "thiếu", "them", "thêm"]
+    },
+    {
+      "id": "usage_help",
+      "templateKey": "usage_help",
+      "keywords": ["how to", "how do i", "help", "setup", "set up", "install", "connect", "can't use", "cannot use", "guide", "huong dan", "hướng dẫn", "cai dat", "cài đặt", "su dung", "sử dụng"]
+    },
+    {
+      "id": "rating_mismatch",
+      "templateKey": "rating_mismatch",
+      "keywords": ["good", "great", "nice", "love", "like", "best", "excellent", "awesome", "hay", "tot", "tốt", "thich", "thích", "tuyet", "tuyệt"]
+    },
+    {
+      "id": "general_1_star",
+      "templateKey": "general_1_star",
+      "keywords": ["bad", "worst", "terrible", "hate", "useless", "poor", "awful", "not good", "te", "tệ", "qua te", "quá tệ", "chan", "chán", "kém"]
+    }
+  ]
+}

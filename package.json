@@ -1,0 +1,10 @@
+{
+  "name": "volio-review-agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Browser-side helper for selecting and sending Volio review reply templates.",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}
