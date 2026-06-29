@@ -39,7 +39,7 @@ If `npm.cmd run verify` is not available, run the checks directly:
 npm.cmd test
 node --check tools\volio_review_agent.js
 node --check tools\classify_reviews.js
-python -B -m py_compile tools\check_bridge.py tools\volio_review_agent.py tools\analyze_log.py
+python -B -m py_compile tools\check_bridge.py tools\volio_review_agent.py tools\analyze_log.py tools\agent_classify.py
 ```
 
 ## Required Long-Running Services
@@ -72,11 +72,17 @@ Scrape:
 python tools\volio_review_agent.py --app $APP --scrape --scrape-pages 1 --url $URL
 ```
 
-Classify with the local rule-based classifier:
+Classify Control Widget with the LLM subagents orchestrator:
 
 ```powershell
-node tools\classify_reviews.js $APP
+python tools\agent_classify.py
 ```
+
+This creates `scratch\classify_request.json` and waits for Antigravity
+`ReviewClassifier` subagents to write
+`apps\control_widget\logs\reviews_classified.json` and delete the signal file.
+Use `node tools\classify_reviews.js $APP` only as an offline fallback, and
+report that fallback explicitly.
 
 Validate:
 
@@ -101,7 +107,7 @@ python tools\analyze_log.py --app $APP --all
 Safe to run concurrently:
 
 - scrape planning for different apps,
-- rule-based classification,
+- classification for different apps when their output paths and signal files do not conflict,
 - validation,
 - log analysis.
 

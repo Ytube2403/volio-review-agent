@@ -53,6 +53,36 @@ Responsibilities:
 - Send messages.
 - Export execution rows and reconciliation state.
 
+### LLM Subagents Classification Orchestrator
+
+File: `tools/agent_classify.py`
+
+Responsibilities:
+
+- Read the Control Widget scrape output.
+- Write `scratch\classify_request.json` as the classification signal.
+- Wait for Antigravity `ReviewClassifier` subagents to produce
+  `apps\control_widget\logs\reviews_classified.json`.
+- Require the signal file to be deleted after the merged output is written.
+
+The LLM subagents mechanism is the default classification path for Control
+Widget because it handles multilingual and mixed-sentiment reviews better than
+keyword rules. It must still select only known intents and saved templates from
+`review_rules.json`; it must never generate custom reply text.
+
+### Rule-Based Classifier
+
+File: `tools/classify_reviews.js`
+
+Responsibilities:
+
+- Provide an offline fallback classifier.
+- Provide a deterministic comparison point for tests and audits.
+
+Do not treat the rule-based classifier as the default Control Widget production
+classifier unless the LLM subagents path is unavailable and the fallback is
+explicitly reported.
+
 ### Rules
 
 File: `review_rules.json`
@@ -185,7 +215,7 @@ Before shipping code or docs changes:
 npm.cmd test
 node --check tools/volio_review_agent.js
 node --check tools/classify_reviews.js
-python -B -m py_compile tools/check_bridge.py tools/volio_review_agent.py tools/analyze_log.py
+python -B -m py_compile tools/check_bridge.py tools/volio_review_agent.py tools/analyze_log.py tools/agent_classify.py
 ```
 
 For docs-only changes, at least verify:

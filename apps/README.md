@@ -17,8 +17,20 @@ apps/vpn/logs/
 apps/bugzz/logs/
 ```
 
-The folders are created automatically by `tools/volio_review_agent.py` and
-`tools/classify_reviews.js` when you run the pipeline.
+The folders are created automatically by `tools/volio_review_agent.py`,
+`tools/agent_classify.py`, and `tools/classify_reviews.js` when you run the
+pipeline.
+
+For Control Widget, classification normally uses the LLM subagents mechanism:
+
+```text
+tools/agent_classify.py
+scratch/classify_request.json
+apps/control_widget/logs/reviews_classified.json
+```
+
+`tools/classify_reviews.js` is kept as a rule-based fallback and comparison
+tool.
 
 If an app needs custom classification rules, add:
 
