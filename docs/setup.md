@@ -65,7 +65,7 @@ Run syntax checks:
 ```powershell
 node --check tools\volio_review_agent.js
 node --check tools\classify_reviews.js
-python -B -m py_compile tools/check_bridge.py tools/volio_review_agent.py tools/analyze_log.py
+python -B -m py_compile tools/check_bridge.py tools/volio_review_agent.py tools/analyze_log.py tools/agent_classify.py
 ```
 
 ## 3. Kimi WebBridge Setup
@@ -214,26 +214,46 @@ reviews from the intended app/filter.
 
 ### Step 2: Classify
 
-Use the local rule-based classifier for the standard portable workflow:
+For Control Widget, use the LLM subagents classification orchestrator:
 
 ```powershell
-node tools\classify_reviews.js $APP
+python tools\agent_classify.py
 ```
 
 Input:
 
 ```text
-apps\<app>\logs\reviews_scraped.json
+apps\control_widget\logs\reviews_scraped.json
 review_rules.json
+review_templates.md
 ```
 
 Output:
 
 ```text
-apps\<app>\logs\reviews_classified.json
+apps\control_widget\logs\reviews_classified.json
 ```
 
-An agent or subagent may review or refine `reviews_classified.json`, but it must
+Mechanism:
+
+1. `tools\agent_classify.py` writes `scratch\classify_request.json`.
+2. Antigravity detects the pending signal.
+3. Antigravity splits reviews into chunks and runs parallel `ReviewClassifier`
+   subagents.
+4. Subagents classify by semantic intent using original text, translated text,
+   `review_rules.json`, and `review_templates.md`.
+5. Antigravity merges the chunks, writes `reviews_classified.json`, and deletes
+   `scratch\classify_request.json`.
+
+The rule-based classifier remains available only as an offline fallback or
+comparison tool:
+
+```powershell
+node tools\classify_reviews.js $APP
+```
+
+If the fallback is used, explicitly mention that in the final run report. A
+human or agent may review or refine `reviews_classified.json`, but it must
 preserve the data contract before validation.
 
 Each classified item should preserve the scraped review fields and include a
@@ -247,6 +267,12 @@ Each classified item should preserve the scraped review fields and include a
 - `reason`
 - `evidence_terms`
 - `guardrail_flags`
+- `classification_text_source`
+- `classification_method`
+
+Each classified item should also include or preserve top-level
+`review_identity` when available. For LLM subagents, the merger generates
+`review_identity` with the same identity algorithm used by the browser agent.
 
 ### Step 3: Validate
 

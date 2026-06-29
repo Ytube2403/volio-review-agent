@@ -17,6 +17,8 @@ Use this checklist at the start and end of every Antigravity or Codex run.
 ## Before Sending
 
 - [ ] `reviews_scraped.json` exists.
+- [ ] Classification used the intended path: LLM subagents for Control Widget, or explicitly reported fallback.
+- [ ] If LLM subagents were used, `scratch\classify_request.json` was deleted after merge.
 - [ ] `reviews_classified.json` exists.
 - [ ] `reviews_classified_validation.json` exists.
 - [ ] Validation error count is zero.

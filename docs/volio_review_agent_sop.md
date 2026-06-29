@@ -67,6 +67,24 @@ Write:
 apps\control_widget\logs\reviews_classified.json
 ```
 
+#### LLM Subagents Classification Mechanism:
+1. **Signal File Creation**: Script local `tools/agent_classify.py` reads `reviews_scraped.json`, writes a signal file `scratch/classify_request.json`, and polls.
+2. **Parallel Subagents**: Antigravity detects the signal, splits the reviews list into chunks (e.g., Part 1 and Part 2), and spawns **2 parallel `ReviewClassifier` subagents** to perform semantic LLM classification against `review_rules.json` and `review_templates.md`.
+3. **Semantic LLM Rules**:
+   - LLM reads original text and translation to understand the real intent of the user.
+   - For example, a 5-star review requesting content (e.g. "Messi widget") is correctly classified as `feature_request` (Content Suggestion template) rather than generic `five_star` templates.
+4. **Merger & Identity Hashing**: Antigravity merges the chunks, hashes each review with **FNV-1a 64-bit** (`username + rating + reviewDate + reviewLanguage + normalizedText`) to generate `review_identity` for Chrome extension synchronization, writes to `reviews_classified.json`, and deletes the signal file.
+
+Run:
+
+```powershell
+python tools\agent_classify.py
+```
+
+Use `node tools\classify_reviews.js control_widget` only as an offline fallback
+or comparison tool. If fallback classification is used for a live batch, report
+that explicitly before validation and in the final status.
+
 Classification rules:
 
 - Use original review text as the main signal.
@@ -74,6 +92,8 @@ Classification rules:
 - Prefer specific intent over general sentiment.
 - Skip uncertain, very short, or ambiguous reviews.
 - Do not force a template just to reduce leftovers.
+- Do not generate custom reply text. LLM subagents only choose known intents and
+  saved templates from `review_rules.json`.
 
 High-priority intent order:
 

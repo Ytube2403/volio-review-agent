@@ -34,7 +34,8 @@ Vietnamese summaries:
 
 - `tools/volio_review_agent.py` - Python controller for browser orchestration and file outputs.
 - `tools/volio_review_agent.js` - browser-side helper injected into the Volio page.
-- `tools/classify_reviews.js` - rule-based classifier from scraped reviews to classified JSON.
+- `tools/agent_classify.py` - LLM subagents classification orchestrator for Control Widget.
+- `tools/classify_reviews.js` - rule-based fallback classifier from scraped reviews to classified JSON.
 - `tools/analyze_log.py` - summarizes batch, validation, and reconciliation logs.
 - `review_rules.json` - intent, template, alias, and folder rules.
 - `apps/README.md` - explains app-scoped runtime folders and local logs.
@@ -49,11 +50,19 @@ Run from `D:\Kimi` in PowerShell.
 python tools\volio_review_agent.py --app control_widget --scrape --scrape-pages 1 --url "<volio-reviews-feed-url>"
 ```
 
-Then classify `apps\control_widget\logs\reviews_scraped.json` into:
+Then classify `apps\control_widget\logs\reviews_scraped.json` into
+`reviews_classified.json` with the LLM subagents mechanism:
 
 ```powershell
-node tools\classify_reviews.js control_widget
+python tools\agent_classify.py
 ```
+
+This writes `scratch\classify_request.json`, waits for Antigravity
+`ReviewClassifier` subagents to classify chunks semantically against
+`review_rules.json` and `review_templates.md`, then expects the merged
+`apps\control_widget\logs\reviews_classified.json` output. Use
+`node tools\classify_reviews.js control_widget` only as an offline fallback or
+for regression comparison.
 
 Validate before any live reply:
 
@@ -106,5 +115,5 @@ full diagnostic flow.
 npm.cmd test
 node --check tools/volio_review_agent.js
 node --check tools/classify_reviews.js
-python -B -m py_compile tools/check_bridge.py tools/volio_review_agent.py tools/analyze_log.py
+python -B -m py_compile tools/check_bridge.py tools/volio_review_agent.py tools/analyze_log.py tools/agent_classify.py
 ```

@@ -43,6 +43,27 @@ reviews_classified.json
 
 Each item should preserve the scrape fields and add a `decision` object.
 
+For the LLM subagents path, classification is requested through:
+
+```text
+scratch\classify_request.json
+```
+
+Signal shape:
+
+```json
+{
+  "status": "pending",
+  "timestamp": 1782700000.0,
+  "items": []
+}
+```
+
+When Antigravity finishes classification, it must write
+`apps\control_widget\logs\reviews_classified.json` and delete the signal file.
+If the signal file remains, the orchestration script treats classification as
+incomplete.
+
 Expected `decision` fields:
 
 - `intent`
@@ -54,6 +75,24 @@ Expected `decision` fields:
 - `evidence_terms`
 - `needs_human_review`
 - `guardrail_flags`
+- `classification_text_source`
+- `classification_method`
+
+Expected top-level classification item fields:
+
+- all scrape output fields
+- `review_identity`
+- `decision`
+
+Allowed `classification_method` values:
+
+- `llm_subagents`
+- `rule_fallback`
+- `manual_review`
+
+LLM subagents must choose only known intents/templates from `review_rules.json`
+and must not generate custom reply text. If confidence is low, the row should be
+`skipped_uncertain` or marked with `needs_human_review`.
 
 ### Validation Outputs
 
