@@ -1,0 +1,22 @@
+# Dependencies and local caches
+node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Runtime outputs
+apps/**/logs/*
+!apps/**/logs/.gitkeep
+logs/
+*.log
+
+# Local investigation artifacts
+scratch/
+Review/
+review_templates.md
+apps/recent_template_insight_report.json

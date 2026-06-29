@@ -11,108 +11,726 @@
     "general_1_star": {
       "template": "General 1 star",
       "folder": "User chê app",
-      "aliases": ["General 1 star"]
+      "aliases": [
+        "General 1 star"
+      ]
     },
     "need_details": {
       "template": "Need Details",
       "folder": "Review không liên quan",
-      "aliases": ["Need Details"]
+      "aliases": [
+        "Need Details"
+      ]
     },
     "technical_issue": {
       "template": "Technical Issue",
       "folder": "Technical Issue Response",
-      "aliases": ["Technical Issue", "Technical Issue Response", "Technical Issue Thanks", "Technical Issue Fixed"]
+      "aliases": [
+        "Technical Issue",
+        "Technical Issue Response",
+        "Technical Issue Thanks",
+        "Technical Issue Fixed",
+        "Content Error"
+      ]
     },
     "remove_ads": {
       "template": "Remove Ads 3",
       "folder": "Remove Ads",
-      "aliases": ["Remove Ads 3", "remove ads 2", "Quảng cáo - Remove ad", "Reply_4Star_Ads_Option3"]
+      "aliases": [
+        "Remove Ads 3",
+        "Ads - Improvement",
+        "Ads - Angry",
+        "Ads - Positive",
+        "Ads - Good App",
+        "Remove Ads - Unskippable",
+        "Remove Ads 4",
+        "remove ads 2",
+        "Quảng cáo - Remove ad"
+      ]
+    },
+    "positive_ads_feedback": {
+      "template": "Reply_4Star_Ads_Option3",
+      "folder": "Remove Ads",
+      "aliases": [
+        "Reply_4Star_Ads_Option3",
+        "Ads - Positive",
+        "Ads - Good App",
+        "Positive but Ads Feedback"
+      ]
     },
     "permission_concern": {
-      "template": "Permission Concern",
+      "template": "Privacy",
       "folder": "Technical Issue Response",
-      "aliases": ["Permission Concern"]
+      "aliases": [
+        "Privacy",
+        "Permission Concern"
+      ]
     },
     "virus_problem": {
       "template": "Virus Problem",
       "folder": "Technical Issue Response",
-      "aliases": ["Virus Problem"]
+      "aliases": [
+        "Virus Problem"
+      ]
     },
     "usage_help": {
       "template": "Usage Help",
       "folder": "Review không liên quan",
-      "aliases": ["Usage Help"]
+      "aliases": [
+        "Usage Help"
+      ]
     },
     "missing_content": {
       "template": "Missing Content",
       "folder": "User góp ý",
-      "aliases": ["Missing Content"]
+      "aliases": [
+        "Missing Content"
+      ]
+    },
+    "feature_request": {
+      "template": "Feature Request",
+      "folder": "User góp ý",
+      "aliases": [
+        "Feature Request",
+        "Content Suggestion"
+      ]
     },
     "performance_issue": {
       "template": "Performance Issue",
       "folder": "Technical Issue Response",
-      "aliases": ["Performance Issue"]
+      "aliases": [
+        "Performance Issue"
+      ]
     },
     "rating_mismatch": {
-      "template": "Rating Mismatch",
-      "folder": "Review không liên quan",
-      "aliases": ["Rating Mismatch"]
+      "template": "Positive Low Rating",
+      "folder": "User khen app",
+      "aliases": [
+        "Positive Low Rating",
+        "Rating Mismatch"
+      ]
+    },
+    "paywall": {
+      "template": "Paywall",
+      "folder": "User góp ý",
+      "aliases": [
+        "Paywall"
+      ]
+    },
+    "five_star": {
+      "template": "Phản hồi 5 sao - Nhiều Icon (2)",
+      "folder": "5 sao",
+      "aliases": [
+        "Phản hồi 5 sao - Nhiều Icon (2)",
+        "cảm ơn sâu sắc",
+        "mời quay lại dùng tiếp",
+        "ghi nhận góp ý (nếu có)",
+        "5 sao (2)",
+        "Phản hồi 5 sao 1",
+        "Short Thanks",
+        "Feature Love",
+        "Positive With Issue",
+        "User Love",
+        "Great App 2",
+        "Great user taste",
+        "Great App",
+        "Khen ngợi - Phản hồi nhiệt tình",
+        "Phản hồi thân thiện",
+        "Phản hồi đáng yêu 1",
+        "Phản hồi đáng yêu 2"
+      ]
+    },
+    "four_star": {
+      "template": "Great App 2",
+      "folder": "User khen app",
+      "aliases": [
+        "Great App 2",
+        "User Love",
+        "cảm ơn sâu sắc",
+        "mời quay lại dùng tiếp",
+        "Phản hồi 5 sao 1",
+        "Short Thanks",
+        "Feature Love",
+        "Positive With Issue",
+        "Great user taste",
+        "Great App",
+        "Khen ngợi - Phản hồi nhiệt tình",
+        "Phản hồi thân thiện",
+        "Phản hồi đáng yêu 1",
+        "Phản hồi đáng yêu 2"
+      ]
     }
   },
   "templateFolders": {
-    "Review không liên quan": ["Usage Help", "Improve Note", "Need Details", "Rating Mismatch", "Not Good", "Không liên quan 1"],
-    "Technical Issue Response": ["Virus Problem", "Technical Issue", "Permission Concern", "Technical Issue Thanks", "Technical Issue Fixed", "Performance Issue"],
-    "User chê app": ["General 1 star", "Xin lỗi & Cam kết cải thiện", "Xin lỗi và Hỗ trợ kỹ thuật", "Xin lỗi và cam kết cập nhật"],
-    "User góp ý": ["Missing Content", "Setup Feedback", "Star Upgrade", "Positive but Ads Feedback"],
-    "User khen app": ["User Love", "Great App 2", "Great user taste", "Great App", "Khen ngợi - Phản hồi nhiệt tình", "Phản hồi thân thiện", "Phản hồi đáng yêu 1", "Phản hồi đáng yêu 2"],
-    "Remove Ads": ["Remove Ads 3", "remove ads 2", "Quảng cáo - Remove ad", "Reply_4Star_Ads_Option3"],
-    "5 sao": ["Phản hồi 5 sao - Nhiều Icon (2)", "cảm ơn sâu sắc", "mời quay lại dùng tiếp", "ghi nhận góp ý (nếu có)", "5 sao (2)", "Phản hồi 5 sao 1"]
+    "Review không liên quan": [
+      "Usage Help",
+      "Improve Note",
+      "Need Details",
+      "Rating Mismatch",
+      "Not Good",
+      "Không liên quan 1"
+    ],
+    "Technical Issue Response": [
+      "Virus Problem",
+      "Technical Issue",
+      "Privacy",
+      "Permission Concern",
+      "Technical Issue Thanks",
+      "Technical Issue Fixed",
+      "Performance Issue",
+      "Content Error"
+    ],
+    "User chê app": [
+      "General 1 star",
+      "Xin lỗi & Cam kết cải thiện",
+      "Xin lỗi và Hỗ trợ kỹ thuật",
+      "Xin lỗi và cam kết cập nhật"
+    ],
+    "User góp ý": [
+      "Feature Request",
+      "Missing Content",
+      "Paywall",
+      "Setup Feedback",
+      "Star Upgrade",
+      "Positive but Ads Feedback",
+      "Content Suggestion"
+    ],
+    "User khen app": [
+      "Positive With Issue",
+      "Feature Love",
+      "Short Thanks",
+      "Positive Low Rating",
+      "User Love",
+      "Great App 2",
+      "Great user taste",
+      "Great App",
+      "Khen ngợi - Phản hồi nhiệt tình",
+      "Phản hồi thân thiện",
+      "Phản hồi đáng yêu 1",
+      "Phản hồi đáng yêu 2"
+    ],
+    "Remove Ads": [
+      "Remove Ads - Unskippable",
+      "Ads - Good App",
+      "Remove Ads 4",
+      "Ads - Improvement",
+      "Ads - Angry",
+      "Ads - Positive",
+      "Remove Ads 3",
+      "remove ads 2",
+      "Quảng cáo - Remove ad",
+      "Reply_4Star_Ads_Option3"
+    ],
+    "5 sao": [
+      "Phản hồi 5 sao - Nhiều Icon (2)",
+      "cảm ơn sâu sắc",
+      "mời quay lại dùng tiếp",
+      "ghi nhận góp ý (nếu có)",
+      "5 sao (2)",
+      "Phản hồi 5 sao 1"
+    ]
   },
   "intents": [
     {
       "id": "virus_problem",
       "templateKey": "virus_problem",
-      "keywords": ["virus", "malware", "trojan", "unsafe", "security", "hack", "scam", "lừa đảo", "doc hai", "độc hại", "bao mat", "bảo mật"]
+      "keywords": [
+        "virus",
+        "malware",
+        "trojan",
+        "unsafe",
+        "security",
+        "hack",
+        "scam",
+        "lừa đảo",
+        "doc hai",
+        "độc hại",
+        "bao mat",
+        "bảo mật"
+      ]
+    },
+    {
+      "id": "positive_ads_feedback",
+      "templateKey": "positive_ads_feedback",
+      "keywords": [
+        "ad",
+        "ads",
+        "advert",
+        "advertisement",
+        "quang cao",
+        "quảng cáo",
+        "remove ads",
+        "too many ads",
+        "popup ad",
+        "publicité",
+        "publicidad",
+        "publicidade",
+        "реклама",
+        "โฆษณา",
+        "iklan",
+        "iklannya",
+        "reklama",
+        "reklamie",
+        "광고",
+        "광고가",
+        "광고는",
+        "광고를"
+      ],
+      "exclude": [
+        "hate",
+        "angry",
+        "terrible",
+        "worst",
+        "bad",
+        "unusable",
+        "cannot use",
+        "can't use",
+        "cant use",
+        "not usable",
+        "doesn't work",
+        "not working"
+      ]
     },
     {
       "id": "remove_ads",
       "templateKey": "remove_ads",
-      "keywords": ["ad", "ads", "advert", "advertisement", "quang cao", "quảng cáo", "remove ads", "too many ads", "full screen ad", "popup ad"]
+      "keywords": [
+        "ad",
+        "ads",
+        "advert",
+        "adverts",
+        "advertisement",
+        "advertisements",
+        "quang cao",
+        "quảng cáo",
+        "quảng cqso",
+        "qc",
+        "qcáo",
+        "q.cáo",
+        "q cáo",
+        "quảng cáp",
+        "remove ads",
+        "too many ads",
+        "full screen ad",
+        "popup ad",
+        "pub",
+        "pubs",
+        "publicite",
+        "publicité",
+        "publicites",
+        "publicités",
+        "annonce",
+        "annonces",
+        "werbung",
+        "reklame",
+        "propaganda",
+        "propagandas",
+        "anuncio",
+        "anuncios",
+        "anúncio",
+        "anúncios",
+        "reklam",
+        "reklamlar",
+        "reklama",
+        "reklamie",
+        "pubblicita",
+        "pubblicità",
+        "publicidad",
+        "publicidades",
+        "publicidade",
+        "реклама",
+        "рекламы",
+        "рекламу",
+        "рекламе",
+        "реклам",
+        "реклами",
+        "โฆษณา",
+        "โฆษณ",
+        "iklan",
+        "iklannya",
+        "reclame",
+        "광고",
+        "광고가",
+        "광고는",
+        "광고를"
+      ]
     },
     {
       "id": "permission_concern",
       "templateKey": "permission_concern",
-      "keywords": ["permission", "permissions", "privacy", "private", "data", "collect", "tracking", "camera", "microphone", "location", "quyen", "quyền", "du lieu", "dữ liệu", "rieng tu", "riêng tư"]
+      "keywords": [
+        "permission",
+        "permissions",
+        "privacy",
+        "private",
+        "data",
+        "collect",
+        "tracking",
+        "camera",
+        "microphone",
+        "location",
+        "quyen",
+        "quyền",
+        "du lieu",
+        "dữ liệu",
+        "rieng tu",
+        "riêng tư",
+        "thông báo",
+        "thong bao",
+        "notification",
+        "notifications",
+        "bildirim",
+        "bildirimler"
+      ]
+    },
+    {
+      "id": "paywall",
+      "templateKey": "paywall",
+      "keywords": [
+        "pay",
+        "paid",
+        "payment",
+        "purchase",
+        "buy",
+        "money",
+        "subscription",
+        "premium",
+        "locked",
+        "unlock",
+        "charge",
+        "cost",
+        "fee",
+        "tra tien",
+        "trả tiền",
+        "mat tien",
+        "mất tiền",
+        "bat tra tien",
+        "bắt trả tiền",
+        "mua",
+        "tinh phi",
+        "tính phí",
+        "فلوس",
+        "مال",
+        "اشتراك",
+        "مدفوع"
+      ]
     },
     {
       "id": "technical_issue",
       "templateKey": "technical_issue",
-      "keywords": ["bug", "error", "crash", "crashed", "not working", "doesn't work", "dont work", "can't open", "cannot open", "freeze", "stuck", "lag", "black screen", "failed", "fix", "broken", "loi", "lỗi", "khong hoat dong", "không hoạt động", "bi treo", "bị treo", "văng", "sập"]
+      "keywords": [
+        "bug",
+        "error",
+        "crash",
+        "crashed",
+        "crashes",
+        "not working",
+        "doesn't work",
+        "dont work",
+        "can't open",
+        "cannot open",
+        "freeze",
+        "stuck",
+        "lag",
+        "black screen",
+        "failed",
+        "fix",
+        "broken",
+        "loi",
+        "lỗi",
+        "khong hoat dong",
+        "không hoạt động",
+        "bi treo",
+        "bị treo",
+        "văng",
+        "sập",
+        "connect",
+        "connection",
+        "connecting",
+        "disconnect",
+        "disconnected",
+        "reconnect",
+        "reconnecting",
+        "cannot connect",
+        "cant connect",
+        "can't connect",
+        "won't connect",
+        "wont connect",
+        "no connect",
+        "fail to connect",
+        "failed to connect",
+        "ket noi",
+        "kết nối",
+        "không kết nối",
+        "khong ket noi",
+        "khó kết nối",
+        "kho ket noi",
+        "conectar",
+        "conexion",
+        "conexión",
+        "connexion",
+        "connecter",
+        "conexao",
+        "conexão",
+        "comectar",
+        "conectat",
+        "conetar",
+        "conetarse",
+        "conctar",
+        "concta",
+        "verbinden",
+        "verbindung",
+        "collegare",
+        "collegamento",
+        "wifi",
+        "wi-fi",
+        "wi fi",
+        "wireless",
+        "не работает",
+        "не працює",
+        "работает",
+        "подключение",
+        "подключить",
+        "підключення",
+        "з'єднання",
+        "коннект",
+        "خراب",
+        "اتصال",
+        "وصل",
+        "نمی‌شه",
+        "نمیشه",
+        "çalışmıyor",
+        "baglanti",
+        "лагает",
+        "баг",
+        "баги",
+        "tidak berfungsi",
+        "tidak fungsi",
+        "gak fungsi",
+        "ga fungsi",
+        "nggak fungsi",
+        "tak boleh pakai",
+        "tidak bisa dipakai"
+      ]
     },
     {
       "id": "performance_issue",
       "templateKey": "performance_issue",
-      "keywords": ["slow", "laggy", "lag", "battery", "heat", "hot", "ram", "storage", "performance", "data usage", "cham", "chậm", "nong may", "nóng máy", "hao pin", "tốn pin", "giật"]
+      "keywords": [
+        "slow",
+        "laggy",
+        "lag",
+        "battery",
+        "heat",
+        "hot",
+        "ram",
+        "storage",
+        "performance",
+        "data usage",
+        "cham",
+        "chậm",
+        "nong may",
+        "nóng máy",
+        "hao pin",
+        "tốn pin",
+        "giật"
+      ]
     },
     {
       "id": "missing_content",
       "templateKey": "missing_content",
-      "keywords": ["missing", "no content", "not enough", "need more", "where is", "not available", "khong co", "không có", "thieu", "thiếu", "them", "thêm"]
+      "keywords": [
+        "missing",
+        "no content",
+        "not enough",
+        "need more",
+        "where is",
+        "not available",
+        "khong co",
+        "không có",
+        "thieu",
+        "thiếu",
+        "them",
+        "thêm"
+      ]
+    },
+    {
+      "id": "feature_request",
+      "templateKey": "feature_request",
+      "keywords": [
+        "feature request",
+        "suggestion",
+        "please add",
+        "can you add",
+        "could you add",
+        "would like",
+        "i wish",
+        "wish it had",
+        "hope it's offline",
+        "offline mode",
+        "should be offline",
+        "need offline",
+        "more options",
+        "new feature",
+        "add more",
+        "bổ sung",
+        "bo sung",
+        "thêm tính năng",
+        "them tinh nang",
+        "ngoại tuyến",
+        "ngoai tuyen"
+      ]
     },
     {
       "id": "usage_help",
       "templateKey": "usage_help",
-      "keywords": ["how to", "how do i", "help", "setup", "set up", "install", "connect", "can't use", "cannot use", "guide", "huong dan", "hướng dẫn", "cai dat", "cài đặt", "su dung", "sử dụng"]
+      "keywords": [
+        "how to",
+        "how do i",
+        "how does",
+        "how does it",
+        "how dose",
+        "how work",
+        "how it work",
+        "how use",
+        "how to use",
+        "how to connect",
+        "how connect",
+        "help",
+        "setup",
+        "set up",
+        "install",
+        "connect",
+        "can't use",
+        "cannot use",
+        "guide",
+        "huong dan",
+        "hướng dẫn",
+        "cai dat",
+        "cài đặt",
+        "su dung",
+        "sử dụng",
+        "como funciona",
+        "como usar",
+        "comment ca marche",
+        "wie funktioniert",
+        "nasil calisir"
+      ]
     },
     {
       "id": "rating_mismatch",
       "templateKey": "rating_mismatch",
-      "keywords": ["good", "great", "nice", "love", "like", "best", "excellent", "awesome", "hay", "tot", "tốt", "thich", "thích", "tuyet", "tuyệt"]
+      "keywords": [
+        "good",
+        "great",
+        "nice",
+        "love",
+        "like",
+        "best",
+        "excellent",
+        "awesome",
+        "hay",
+        "tot",
+        "tốt",
+        "thich",
+        "thích",
+        "tuyet",
+        "tuyệt",
+        "đẹp",
+        "dep",
+        "tuyệt vời",
+        "tuyet voi",
+        "ok",
+        "okay",
+        "tiện lợi",
+        "tien loi",
+        "hữu ích",
+        "huu ich",
+        "hoàn hảo",
+        "hoan hao",
+        "bon",
+        "bonne",
+        "super",
+        "bien",
+        "adore",
+        "adoré",
+        "adore",
+        "bueno",
+        "buena",
+        "excelente",
+        "me encanta",
+        "encanta",
+        "gusto",
+        "gusta",
+        "bom",
+        "boa",
+        "otimo",
+        "ótimo",
+        "legal",
+        "gostei",
+        "gosto",
+        "adoro",
+        "adorado",
+        "bello",
+        "bella",
+        "buono",
+        "buona",
+        "ottimo",
+        "ottima",
+        "bene",
+        "bagus",
+        "baik",
+        "mantap",
+        "keren",
+        "iyi",
+        "guzel",
+        "güzel",
+        "harika",
+        "cok guzel",
+        "خوب",
+        "عالی",
+        "ممتاز",
+        "جميل",
+        "حلو",
+        "хорошо",
+        "отлично",
+        "класс",
+        "нормально",
+        "hermoso",
+        "hermosa"
+      ],
+      "exclude": [
+        "don't like",
+        "dont like",
+        "do not like",
+        "khong thich",
+        "không thích",
+        "bad",
+        "tệ",
+        "not working",
+        "doesn't work"
+      ]
     },
     {
       "id": "general_1_star",
       "templateKey": "general_1_star",
-      "keywords": ["bad", "worst", "terrible", "hate", "useless", "poor", "awful", "not good", "te", "tệ", "qua te", "quá tệ", "chan", "chán", "kém"]
+      "keywords": [
+        "bad",
+        "worst",
+        "terrible",
+        "hate",
+        "useless",
+        "poor",
+        "awful",
+        "not good",
+        "te",
+        "tệ",
+        "qua te",
+        "quá tệ",
+        "chan",
+        "chán",
+        "kém"
+      ]
     }
   ]
 }

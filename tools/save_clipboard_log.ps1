@@ -1,6 +1,11 @@
+param(
+  [string]$App = "control_widget"
+)
+
 $ErrorActionPreference = "Stop"
 
-$logDir = Join-Path (Split-Path -Parent $PSScriptRoot) "logs"
+$rootDir = Split-Path -Parent $PSScriptRoot
+$logDir = Join-Path $rootDir "apps\$App\logs"
 if (-not (Test-Path -LiteralPath $logDir)) {
   New-Item -ItemType Directory -Path $logDir | Out-Null
 }

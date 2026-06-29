@@ -1,87 +1,110 @@
 # Volio Review Agent
 
-Browser-side helper for selecting and sending Volio App Publisher review reply templates.
+Automation toolkit for scraping, classifying, validating, and replying to
+reviews in Volio Apps Publisher with saved reply templates.
 
-## Files
+This project is intentionally conservative: it uses existing templates, logs
+each decision, and requires validation before any live reply run.
 
-- `review_rules.json`: editable intent-to-template rules, including verified template folder mappings from `D:\Kimi\Review`.
-- `tools/volio_review_agent.js`: self-contained script to run inside the Volio browser page.
-- `tests/review_classifier.test.js`: classifier coverage for the risky template choices.
-- `docs/volio_review_agent_sop.md`: operational SOP for AI agents running the recurring task.
+## Start Here
 
-## Browser Usage
+Read these files in order:
 
-Open the Volio Review Feed page with the target app/filter already selected:
+1. [Project Standard](docs/project_standard.md) - scope, architecture, rules, and definitions of done.
+2. [Setup Guide](docs/setup.md) - machine setup, bridge verification, first run, and usage details.
+3. [Home Server Operations](docs/home_server.md) - clone, verify, schedule, and run continuous review work safely.
+4. [Operating SOP](docs/volio_review_agent_sop.md) - the daily scrape/classify/validate/reply/analyze workflow.
+5. [Kimi Bridge Troubleshooting](docs/kimi_bridge_troubleshooting.md) - how to diagnose Antigravity/Kimi WebBridge tab issues.
+6. [Data Contract](docs/data_contract.md) - expected files, JSON fields, log fields, and pass/fail gates.
+7. [Agent Checklist](docs/agent_checklist.md) - short checklist for each Antigravity or Codex run.
 
-- tab: `No replies`
-- rating filter: `1`, `2`, `3`
-- page size: `50`
+The older implementation plan is kept at
+[Reconciliation Loop Plan](docs/reconciliation_loop_plan.md).
 
-Load the agent script in the page context through Kimi Bridge, Chrome DevTools Console, or any DOM-injection flow:
+Agent-facing documentation is canonical in English. Human-facing Vietnamese
+summaries for design/product readers live under `docs/vi/` and must not be used
+as the source of truth for automation behavior.
 
-```js
-// Paste the contents of tools/volio_review_agent.js first.
-await VolioReviewAgent.dryRun({ maxReviews: 5 });
-```
+Vietnamese summaries:
 
-Convenience helper on Windows:
+- [Project Overview](docs/vi/project_overview.md)
+- [Workflow Summary](docs/vi/workflow_summary.md)
 
-```powershell
-.\tools\copy_agent_to_clipboard.ps1
-```
+## Repository Layout
 
-Then paste the clipboard content into the Volio page console or inject it through Kimi Bridge.
+- `tools/volio_review_agent.py` - Python controller for browser orchestration and file outputs.
+- `tools/volio_review_agent.js` - browser-side helper injected into the Volio page.
+- `tools/classify_reviews.js` - rule-based classifier from scraped reviews to classified JSON.
+- `tools/analyze_log.py` - summarizes batch, validation, and reconciliation logs.
+- `review_rules.json` - intent, template, alias, and folder rules.
+- `apps/README.md` - explains app-scoped runtime folders and local logs.
+- `apps/<app>/logs/` - local-only scrape, classification, validation, execution, and analysis outputs.
+- `tests/*.test.js` - classifier and reconciliation unit tests.
 
-Recommended staged run for script-only use:
+## Standard Pipeline
 
-```js
-// 1. Classify only. No clicks.
-await VolioReviewAgent.dryRun({ maxReviews: 5 });
-
-// 2. Select templates for the current page, but do not send.
-await VolioReviewAgent.selectOnly({ maxReviews: 50 });
-
-// 3. Send every selected reply with a 15 second gap.
-await VolioReviewAgent.sendSelected({ sendDelayMs: 15000 });
-```
-
-For live Chrome/Codex operation, prefer the SOP in `docs/volio_review_agent_sop.md`: process one review at a time, send it, wait for the reply box to disappear, then continue. Do not keep multiple reply boxes open.
-
-One-shot mode:
-
-```js
-await VolioReviewAgent.selectThenSend({
-  maxReviews: 50,
-  sendDelayMs: 15000,
-  minConfidence: 0.62
-});
-```
-
-Export the batch log:
-
-```js
-VolioReviewAgent.downloadLog();
-// or
-await VolioReviewAgent.copyLog();
-```
-
-To save a copied log under `D:\Kimi\logs`:
+Run from `D:\Kimi` in PowerShell.
 
 ```powershell
-.\tools\save_clipboard_log.ps1
+python tools\volio_review_agent.py --app control_widget --scrape --scrape-pages 1 --url "<volio-reviews-feed-url>"
+```
+
+Then classify `apps\control_widget\logs\reviews_scraped.json` into:
+
+```powershell
+node tools\classify_reviews.js control_widget
+```
+
+Validate before any live reply:
+
+```powershell
+python tools\volio_review_agent.py --app control_widget --validate-classified
+```
+
+Only execute after validation is clean:
+
+```powershell
+python tools\volio_review_agent.py --app control_widget --reply-from-classified --reply-pages 1 --url "<volio-reviews-feed-url>"
+python tools\analyze_log.py --app control_widget --all
 ```
 
 ## Safety Rules
 
-- The script does not click `Rewrite with AI`.
-- The script does not type custom reply text.
-- Reviews with low confidence are skipped.
-- The selected decision includes a `folder` field so hidden templates can be picked from the correct `Saved Replies` folder.
-- Sending stops if a send action does not appear to complete after the delay.
-- When controlling Chrome directly, cancel any open reply box before switching to another review.
+- Do not click `Rewrite with AI`.
+- Do not type custom reply text.
+- Do not send rows with validation errors, warnings, or guardrail flags unless explicitly approved.
+- Do not treat a successful template match as a successful send. Wait for real UI completion.
+- Do not declare a batch complete until `tools/analyze_log.py` has been run and reconciliation is clean.
+- If Kimi Bridge returns HTTP 502, read the response body before assuming the daemon is down.
 
-## Test
+## Kimi WebBridge Rule
+
+The bridge daemon can be healthy while a session has no browser tab. Before any
+`evaluate`, the controller or agent must bind a tab with `find_tab` or
+`navigate` in the same session.
+
+Healthy bridge evidence:
+
+- Port `127.0.0.1:10086` is listening.
+- `list_tabs` returns JSON.
+- The daemon log shows extension connection, for example `hello from extension v1.10.0`.
+
+Common failure:
+
+```text
+HTTP 502: session "<name>" has no tab - navigate or find_tab first
+```
+
+This is a stale or unbound session, not a dead daemon.
+
+See [Kimi Bridge Troubleshooting](docs/kimi_bridge_troubleshooting.md) for the
+full diagnostic flow.
+
+## Verification
 
 ```powershell
 npm.cmd test
+node --check tools/volio_review_agent.js
+node --check tools/classify_reviews.js
+python -B -m py_compile tools/check_bridge.py tools/volio_review_agent.py tools/analyze_log.py
 ```

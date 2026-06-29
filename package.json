@@ -5,6 +5,9 @@
   "description": "Browser-side helper for selecting and sending Volio review reply templates.",
   "type": "commonjs",
   "scripts": {
-    "test": "node --test tests/*.test.js"
+    "test": "node --test tests/*.test.js",
+    "check:js": "node --check tools/volio_review_agent.js && node --check tools/classify_reviews.js",
+    "check:py": "python -B -m py_compile tools/check_bridge.py tools/volio_review_agent.py tools/analyze_log.py",
+    "verify": "npm run test && npm run check:js && npm run check:py"
   }
 }
