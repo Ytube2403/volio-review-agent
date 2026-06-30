@@ -90,10 +90,22 @@ Classification rules:
 - Use original review text as the main signal.
 - Use translated text only as supporting evidence.
 - Prefer specific intent over general sentiment.
+- Treat `add`/`adds` as possible ads misspellings only when the phrase is not a
+  feature-add request. Phrases such as `please add`, `can you add`, `add more`,
+  or `add option` must stay in feature request / content suggestion territory,
+  not ads complaint.
 - Skip uncertain, very short, or ambiguous reviews.
 - Do not force a template just to reduce leftovers.
 - Do not generate custom reply text. LLM subagents only choose known intents and
   saved templates from `review_rules.json`.
+- For generic positive praise, avoid overusing `User Love`. Use the approved
+  positive alternatives when they fit: `User Love - Warm` for warm support,
+  `User Love - Share` for friendly praise where a share suggestion is suitable,
+  and `User Love - Engage` for continued-use encouragement.
+- If a subagent still selects generic `User Love`, validation may rebalance it
+  deterministically across `User Love`, `User Love - Warm`, `User Love - Share`,
+  and `User Love - Engage` using `review_identity`. The result is stable across
+  reruns and is logged with a `rebalance_template` validation warning.
 
 High-priority intent order:
 
@@ -131,6 +143,9 @@ Hard stop conditions:
 - Any selected row with guardrail flags.
 - Any selected row whose intent does not match the review text.
 - Any row where the selected template is outside the allowed alias group.
+
+Allowed `rebalance_template:User Love->...` warnings are informational when
+the only change is distribution across approved `User Love` variants.
 
 ### 4. Human Gate
 

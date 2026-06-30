@@ -92,6 +92,7 @@ Responsibilities:
 - Intent definitions.
 - Template aliases.
 - Template folder mapping.
+- Template rotation groups, including positive `User Love` variants.
 - Guardrail and validation policy.
 
 ### Analysis

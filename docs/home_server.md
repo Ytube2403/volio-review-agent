@@ -84,6 +84,11 @@ This creates `scratch\classify_request.json` and waits for Antigravity
 Use `node tools\classify_reviews.js $APP` only as an offline fallback, and
 report that fallback explicitly.
 
+Validation may rebalance generic `User Love` positive replies across
+`User Love`, `User Love - Warm`, `User Love - Share`, and `User Love - Engage`
+using `review_identity`. Treat those warnings as expected when the selected
+variant is approved in `review_rules.json`.
+
 Validate:
 
 ```powershell

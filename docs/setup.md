@@ -212,6 +212,11 @@ apps\<app>\logs\reviews_scraped.json
 Check the scraped file before classification. It should contain the intended
 reviews from the intended app/filter.
 
+When a `reviews-feed` URL includes `start_date` or `end_date`, treat that date
+range as part of the batch identity. The controller should navigate again if
+the visible tab has a different date range, even when `app_id`, page, and reply
+filter already match.
+
 ### Step 2: Classify
 
 For Control Widget, use the LLM subagents classification orchestrator:
@@ -244,6 +249,16 @@ Mechanism:
    `review_rules.json`, and `review_templates.md`.
 5. Antigravity merges the chunks, writes `reviews_classified.json`, and deletes
    `scratch\classify_request.json`.
+
+Ads classification handles common `ad`/`add` typo noise, but feature-add
+phrases such as `please add`, `can you add`, or `add more` are explicitly
+excluded from ads matching so they can remain feature requests.
+
+For generic positive praise, subagents may choose `User Love`,
+`User Love - Warm`, `User Love - Share`, or `User Love - Engage`. Validation also
+deterministically rebalances generic `User Love` selections across this group
+by `review_identity` so a batch does not repeat the same positive reply too
+often.
 
 The rule-based classifier remains available only as an offline fallback or
 comparison tool:

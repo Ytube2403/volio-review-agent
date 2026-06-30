@@ -178,6 +178,28 @@ test("rule file has verified folder mappings from the Review screenshots", () =>
   }
 });
 
+test("User Love variants are documented in rules and rotation config", () => {
+  const rulePath = path.join(__dirname, "..", "review_rules.json");
+  const fileRules = JSON.parse(fs.readFileSync(rulePath, "utf8"));
+  const expectedUserLoveRotation = [
+    "User Love",
+    "User Love - Warm",
+    "User Love - Share",
+    "User Love - Engage"
+  ];
+
+  assert.deepEqual(fileRules.templateRotation.positive_user_love, expectedUserLoveRotation);
+  assert.deepEqual(agent.DEFAULT_RULES.templateRotation.positive_user_love, expectedUserLoveRotation);
+  for (const name of expectedUserLoveRotation) {
+    assert.ok(fileRules.templates.five_star.aliases.includes(name), name);
+    assert.ok(fileRules.templates.four_star.aliases.includes(name), name);
+    assert.ok(fileRules.templateFolders["User khen app"].includes(name), name);
+    assert.ok(agent.DEFAULT_RULES.templates.five_star.aliases.includes(name), name);
+    assert.ok(agent.DEFAULT_RULES.templates.four_star.aliases.includes(name), name);
+    assert.ok(agent.DEFAULT_RULES.templateFolders["User khen app"].includes(name), name);
+  }
+});
+
 test("remove ads templates can rotate across approved alternatives", () => {
   const rulePath = path.join(__dirname, "..", "review_rules.json");
   const fileRules = JSON.parse(fs.readFileSync(rulePath, "utf8"));
@@ -236,7 +258,8 @@ test("positive praise templates can be reused across approved five-star and four
     status: "selected",
     intent: "five_star",
     template: "User Love",
-    folder: "User khen app"
+    folder: "User khen app",
+    review_identity: "0000000000000000"
   }, agent.DEFAULT_RULES);
   assert.equal(fiveStarUserLove.template, "User Love");
   assert.equal(fiveStarUserLove.folder, "User khen app");
@@ -281,6 +304,39 @@ test("positive praise templates can be reused across approved five-star and four
   assert.equal(positiveWithIssue.template, "Positive With Issue");
   assert.equal(positiveWithIssue.folder, "User khen app");
   assert.equal(positiveWithIssue.validation_status, "valid");
+});
+
+test("generic User Love is rebalanced across approved variants by review identity", () => {
+  const expectedByIdentity = [
+    ["0000000000000000", "User Love"],
+    ["0000000000000001", "User Love - Warm"],
+    ["0000000000000002", "User Love - Share"],
+    ["0000000000000003", "User Love - Engage"]
+  ];
+
+  for (const [reviewIdentity, expectedTemplate] of expectedByIdentity) {
+    const result = agent.validateDecision({
+      status: "selected",
+      intent: "five_star",
+      template: "User Love",
+      folder: "User khen app",
+      review_identity: reviewIdentity
+    }, agent.DEFAULT_RULES);
+    assert.equal(result.template, expectedTemplate);
+    assert.equal(result.folder, "User khen app");
+    assert.equal(result.validation_status, "valid");
+    assert.equal(result.aliases[0], expectedTemplate);
+  }
+
+  const explicitVariant = agent.validateDecision({
+    status: "selected",
+    intent: "four_star",
+    template: "User Love - Engage",
+    folder: "User khen app",
+    review_identity: "0000000000000001"
+  }, agent.DEFAULT_RULES);
+  assert.equal(explicitVariant.template, "User Love - Engage");
+  assert.equal(explicitVariant.validation_status, "valid");
 });
 
 test("classifies general 5-star reviews as five_star", () => {

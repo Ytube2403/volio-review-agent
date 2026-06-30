@@ -183,6 +183,26 @@ def build_rule_indexes(rules):
                 }
     return templates, by_alias
 
+def stable_rotation_index(seed, length):
+    if length <= 0:
+        return 0
+    source = str(seed or "")
+    if re.fullmatch(r"[0-9a-fA-F]{1,16}", source):
+        hashed = source.lower().zfill(16)
+    else:
+        hashed = fnv1a_64(source)
+    return int(hashed[:16], 16) % length
+
+def rebalance_positive_user_love(template_key, selected_template, allowed_names, rules, item):
+    if template_key not in ("five_star", "four_star") or selected_template != "User Love":
+        return selected_template
+    rotation = (rules.get("templateRotation") or {}).get("positive_user_love") or []
+    pool = [name for name in rotation if name in allowed_names]
+    if len(pool) <= 1:
+        return selected_template
+    seed = item.get("review_identity") or review_identity(item)
+    return pool[stable_rotation_index(seed, len(pool))]
+
 def validate_classified_items(items, rules):
     templates, by_alias = build_rule_indexes(rules)
     validated = []
@@ -243,6 +263,10 @@ def validate_classified_items(items, rules):
             canonical = templates[template_key]
             allowed_names = [canonical.get("template", ""), *(canonical.get("aliases") or [])]
             selected_template = template_name if template_name in allowed_names else canonical.get("template", "")
+            rebalanced_template = rebalance_positive_user_love(template_key, selected_template, allowed_names, rules, copy)
+            if rebalanced_template != selected_template:
+                item_warnings.append(f"rebalance_template:{selected_template}->{rebalanced_template}")
+                selected_template = rebalanced_template
             selected_alias = by_alias.get(normalize_text(selected_template)) or {
                 "template": selected_template,
                 "folder": canonical.get("folder", ""),
@@ -452,8 +476,22 @@ def inject_agent(js_file_path, target_url=DEFAULT_REVIEW_URL):
         target_page_num = target_page.group(1) if target_page else "1"
         current_reply_val = current_reply.group(1) if current_reply else None
         target_reply_val = target_reply.group(1) if target_reply else None
-        
-        if current_app_id == target_app_id and current_page_num == target_page_num and current_reply_val == target_reply_val:
+
+        current_start = re.search(r'start_date=([^&]+)', current_url)
+        target_start = re.search(r'start_date=([^&]+)', target_url)
+        current_end = re.search(r'end_date=([^&]+)', current_url)
+        target_end = re.search(r'end_date=([^&]+)', target_url)
+
+        current_start_val = current_start.group(1) if current_start else None
+        target_start_val = target_start.group(1) if target_start else None
+        current_end_val = current_end.group(1) if current_end else None
+        target_end_val = target_end.group(1) if target_end else None
+
+        if (current_app_id == target_app_id and
+            current_page_num == target_page_num and
+            current_reply_val == target_reply_val and
+            current_start_val == target_start_val and
+            current_end_val == target_end_val):
             print("Tab is already on target app, page, and reply filter. Skipping navigation.")
             url = current_url
         else:

@@ -131,6 +131,9 @@
         "Feature Love",
         "Positive With Issue",
         "User Love",
+        "User Love - Warm",
+        "User Love - Share",
+        "User Love - Engage",
         "Great App 2",
         "Great user taste",
         "Great App",
@@ -146,6 +149,9 @@
       "aliases": [
         "Great App 2",
         "User Love",
+        "User Love - Warm",
+        "User Love - Share",
+        "User Love - Engage",
         "cảm ơn sâu sắc",
         "mời quay lại dùng tiếp",
         "Phản hồi 5 sao 1",
@@ -201,6 +207,9 @@
       "Short Thanks",
       "Positive Low Rating",
       "User Love",
+      "User Love - Warm",
+      "User Love - Share",
+      "User Love - Engage",
       "Great App 2",
       "Great user taste",
       "Great App",
@@ -228,6 +237,14 @@
       "ghi nhận góp ý (nếu có)",
       "5 sao (2)",
       "Phản hồi 5 sao 1"
+    ]
+  },
+  "templateRotation": {
+    "positive_user_love": [
+      "User Love",
+      "User Love - Warm",
+      "User Love - Share",
+      "User Love - Engage"
     ]
   },
   "intents": [
@@ -297,6 +314,8 @@
       "keywords": [
         "ad",
         "ads",
+        "add",
+        "adds",
         "advert",
         "adverts",
         "advertisement",
@@ -353,6 +372,23 @@
         "광고가",
         "광고는",
         "광고를"
+      ],
+      "exclude": [
+        "add feature",
+        "add features",
+        "please add",
+        "can you add",
+        "could you add",
+        "to add",
+        "add a",
+        "add more",
+        "add new",
+        "add button",
+        "add option",
+        "add options",
+        "adds a",
+        "adds more",
+        "adds new"
       ]
     },
     {

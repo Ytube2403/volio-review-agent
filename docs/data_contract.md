@@ -64,6 +64,10 @@ When Antigravity finishes classification, it must write
 If the signal file remains, the orchestration script treats classification as
 incomplete.
 
+The source `reviews-feed` URL identity includes `app_id`, page, `reply`, and
+date filters such as `start_date` / `end_date`. A visible tab that differs on
+date range is not the same batch, even if the app and page match.
+
 Expected `decision` fields:
 
 - `intent`
@@ -94,6 +98,11 @@ LLM subagents must choose only known intents/templates from `review_rules.json`
 and must not generate custom reply text. If confidence is low, the row should be
 `skipped_uncertain` or marked with `needs_human_review`.
 
+For ads classification, `add`/`adds` may indicate an ads typo only when the
+surrounding phrase is not a feature-add request. `please add`, `can you add`,
+`add more`, and similar phrases should not be classified as ads complaints by
+that keyword alone.
+
 ### Validation Outputs
 
 ```text
@@ -109,6 +118,11 @@ Expected validation fields:
 - `validation_errors`
 - `template_aliases`
 - `selected_template_button_text`
+
+`validation_warnings` may include informational
+`rebalance_template:User Love-><variant>` entries when validation distributes a
+generic positive reply across approved `User Love` variants. This is expected
+when the intent/template family remains valid.
 
 ### Execution Outputs
 

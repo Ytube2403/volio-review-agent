@@ -64,6 +64,10 @@ This writes `scratch\classify_request.json`, waits for Antigravity
 `node tools\classify_reviews.js control_widget` only as an offline fallback or
 for regression comparison.
 
+Generic positive `User Love` replies are distributed across the approved
+`User Love`, `User Love - Warm`, `User Love - Share`, and
+`User Love - Engage` variants during validation to avoid excessive repetition.
+
 Validate before any live reply:
 
 ```powershell

@@ -141,6 +141,9 @@
                   "Feature Love",
                   "Positive With Issue",
                   "User Love",
+                  "User Love - Warm",
+                  "User Love - Share",
+                  "User Love - Engage",
                   "Great App 2",
                   "Great user taste",
                   "Great App",
@@ -156,6 +159,9 @@
               "aliases": [
                   "Great App 2",
                   "User Love",
+                  "User Love - Warm",
+                  "User Love - Share",
+                  "User Love - Engage",
                   "cảm ơn sâu sắc",
                   "mời quay lại dùng tiếp",
                   "Phản hồi 5 sao 1",
@@ -211,6 +217,9 @@
               "Short Thanks",
               "Positive Low Rating",
               "User Love",
+              "User Love - Warm",
+              "User Love - Share",
+              "User Love - Engage",
               "Great App 2",
               "Great user taste",
               "Great App",
@@ -238,6 +247,14 @@
               "ghi nhận góp ý (nếu có)",
               "5 sao (2)",
               "Phản hồi 5 sao 1"
+          ]
+      },
+      "templateRotation": {
+          "positive_user_love": [
+              "User Love",
+              "User Love - Warm",
+              "User Love - Share",
+              "User Love - Engage"
           ]
       },
       "intents": [
@@ -307,6 +324,8 @@
               "keywords": [
                   "ad",
                   "ads",
+                  "add",
+                  "adds",
                   "advert",
                   "adverts",
                   "advertisement",
@@ -363,6 +382,23 @@
                   "광고가",
                   "광고는",
                   "광고를"
+              ],
+              "exclude": [
+                  "add feature",
+                  "add features",
+                  "please add",
+                  "can you add",
+                  "could you add",
+                  "to add",
+                  "add a",
+                  "add more",
+                  "add new",
+                  "add button",
+                  "add option",
+                  "add options",
+                  "adds a",
+                  "adds more",
+                  "adds new"
               ]
           },
           {
@@ -835,6 +871,23 @@
     return h.toString(16).padStart(16, "0");
   }
 
+  function stableRotationIndex(seed, length) {
+    if (!length) return 0;
+    const source = String(seed || "");
+    const hashed = /^[0-9a-f]{1,16}$/i.test(source) ? source.padStart(16, "0") : fnv1a_64(source);
+    return Number(BigInt(`0x${hashed.slice(0, 16)}`) % BigInt(length));
+  }
+
+  function rebalancePositiveUserLove(templateKey, selectedTemplate, allowedNames, rules, seed) {
+    if ((templateKey !== "five_star" && templateKey !== "four_star") || selectedTemplate !== "User Love") {
+      return selectedTemplate;
+    }
+    const rotation = (((rules || DEFAULT_RULES).templateRotation || {}).positive_user_love) || [];
+    const pool = rotation.filter((name) => allowedNames.includes(name));
+    if (pool.length <= 1) return selectedTemplate;
+    return pool[stableRotationIndex(seed, pool.length)];
+  }
+
   function getReviewCardIdentity(card) {
     const username = extractUserName(card);
     const rating = extractRating(card);
@@ -972,11 +1025,12 @@
   }
 
   function matchesKeyword(normalizedText, normalizedKeyword) {
-    if (normalizedKeyword.includes(" ") || /[\u0e00-\u0e7f\u4e00-\u9fff]/.test(normalizedKeyword)) {
+    if (/[\u0e00-\u0e7f\u4e00-\u9fff]/.test(normalizedKeyword)) {
       return normalizedText.includes(normalizedKeyword);
     }
     const escaped = normalizedKeyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    return new RegExp(`(^|[^\\p{L}\\p{N}])${escaped}([^\\p{L}\\p{N}]|$)`, "u").test(normalizedText);
+    const pattern = escaped.replace(/ /g, "[^\\p{L}\\p{N}]+");
+    return new RegExp(`(^|[^\\p{L}\\p{N}])${pattern}([^\\p{L}\\p{N}]|$)`, "u").test(normalizedText);
   }
 
   function auditCandidates(scored) {
@@ -1209,6 +1263,12 @@
     const template = activeRules.templates[templateKey];
     const allowedNames = [template.template, ...(template.aliases || [])].filter(Boolean);
     let selectedTemplate = allowedNames.includes(activeDecision.template) ? activeDecision.template : template.template;
+    const rotationSeed = activeDecision.review_identity || activeDecision.reviewIdentity || activeDecision.text || activeDecision.originalText || activeDecision.template || templateKey;
+    const rebalancedTemplate = rebalancePositiveUserLove(templateKey, selectedTemplate, allowedNames, activeRules, rotationSeed);
+    if (rebalancedTemplate !== selectedTemplate) {
+      warnings.push(`rebalance_template:${selectedTemplate}->${rebalancedTemplate}`);
+      selectedTemplate = rebalancedTemplate;
+    }
     let selectedAlias = aliasIndex[normalizeText(selectedTemplate)] || { template: selectedTemplate, folder: template.folder || "" };
     let selectedFolder = activeDecision.folder || selectedAlias.folder || template.folder || "";
     const folderTemplates = ((activeRules.templateFolders || {})[selectedFolder]) || [];

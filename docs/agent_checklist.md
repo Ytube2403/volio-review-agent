@@ -10,6 +10,7 @@ Use this checklist at the start and end of every Antigravity or Codex run.
 - [ ] The visible Chrome tab is the intended app/filter.
 - [ ] The page is on `No replies`.
 - [ ] The page size and rating filters are intentional.
+- [ ] If the URL has `start_date` / `end_date`, the visible tab has the same date range.
 - [ ] Kimi WebBridge is running on `127.0.0.1:10086`.
 - [ ] I have called `find_tab` or `navigate` before any `evaluate`.
 - [ ] The bridge-visible `app_id` matches the intended app.
@@ -23,6 +24,7 @@ Use this checklist at the start and end of every Antigravity or Codex run.
 - [ ] `reviews_classified_validation.json` exists.
 - [ ] Validation error count is zero.
 - [ ] Validation warning count is zero or explicitly approved.
+- [ ] `rebalance_template:User Love->...` warnings, if present, only point to approved User Love variants.
 - [ ] No selected row has guardrail flags.
 - [ ] Ambiguous reviews are skipped, blocked, or approved.
 - [ ] The browser tab is still the intended Volio page.
